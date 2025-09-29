@@ -5,113 +5,246 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Bhuvan Parashar • Software Engineer (Java & Spring Boot)</title>
   <meta name="description" content="Software Engineer with 4+ years of backend experience in Java, Spring Boot, microservices, and scalable payment systems." />
+
+  <!-- Inter + Tailwind -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Icons (Lucide) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
           colors: {
-            base: '#0b1020',
-            base2: '#0f172a',
+            base: '#060913',
+            base2: '#0b1020',
             ink: '#e5e7eb',
-            accent: '#22d3ee', /* cyan-400 */
+            accent: '#22d3ee',  /* cyan-400 */
             accent2: '#a78bfa', /* violet-400 */
+            mint: '#10b981',
           },
           boxShadow: {
-            glow: '0 0 0 2px rgba(34,211,238,0.2), 0 0 40px rgba(167,139,250,0.15)',
+            glow: '0 0 0 2px rgba(34,211,238,0.15), 0 10px 40px -10px rgba(167,139,250,0.25)',
+            insetGlow: 'inset 0 0 0 1px rgba(255,255,255,0.06), 0 10px 30px -12px rgba(0,0,0,0.45)',
           },
           keyframes: {
             floaty: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-6px)' } },
             fadeInUp: { '0%': { opacity: 0, transform: 'translateY(12px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
-            shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
+            sheen: { '0%': { transform: 'translateX(-120%)' }, '100%': { transform: 'translateX(120%)' } },
+            borderSpin: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' }
+            },
           },
           animation: {
             floaty: 'floaty 6s ease-in-out infinite',
             fadeInUp: 'fadeInUp .8s ease forwards',
-            shimmer: 'shimmer 2s linear infinite',
+            sheen: 'sheen 1.8s linear infinite',
+            borderSpin: 'borderSpin 6s linear infinite',
           }
         }
-      },
-      darkMode: 'class'
+      }
     }
   </script>
+
   <style>
-    /* Smooth scrolling & reveal on scroll */
+    :root {
+      --ring: rgba(34, 211, 238, .45);
+      --card-bg: rgba(10, 15, 30, .6);
+      --card-stroke: rgba(148, 163, 184, .18);
+    }
+
     html { scroll-behavior: smooth; }
+    body { background: radial-gradient(1200px 500px at 10% -10%, #0b173a55, transparent 60%),
+                    radial-gradient(1000px 500px at 110% 10%, #2a0c3a55, transparent 60%),
+                    #060913; }
     .reveal { opacity: 0; transform: translateY(16px); transition: all .7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    /* Pretty scrollbar (desktop) */
-    ::-webkit-scrollbar { width: 10px; }
-    ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 8px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-    /* Glass card */
-    .glass { background: linear-gradient(180deg, rgba(15,23,42,.8), rgba(2,6,23,.6)); backdrop-filter: blur(8px); border: 1px solid rgba(148,163,184,.15); }
+
+    /* Pretty scrollbar */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #0b1020; }
+    ::-webkit-scrollbar-thumb { background: #2b3a55; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3a4a6a; }
+
+    /* Glass card + gradient border ring */
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(15,23,42,.75), rgba(2,6,23,.6));
+      border: 1px solid var(--card-stroke);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      box-shadow: var(--tw-shadow), var(--tw-ring-shadow, 0 0 #0000), 0 30px 60px -30px rgba(0,0,0,.6);
+    }
+    .card:hover { transform: translateY(-2px); border-color: rgba(167,139,250,.35); box-shadow: 0 0 0 2px rgba(167,139,250,.12), 0 30px 60px -28px rgba(0,0,0,.8); }
+
+    .card--border {
+      position: relative;
+      overflow: hidden;
+    }
+    .card--border::before {
+      content: '';
+      position: absolute;
+      inset: -120%;
+      background:
+        conic-gradient(from 0deg,
+          transparent 0deg,
+          rgba(34,211,238,.35) 60deg,
+          rgba(167,139,250,.35) 120deg,
+          rgba(16,185,129,.30) 180deg,
+          rgba(34,211,238,.35) 240deg,
+          transparent 360deg);
+      animation: borderSpin 7s linear infinite;
+      filter: blur(18px);
+    }
+    .card--border::after {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-stroke);
+      backdrop-filter: blur(8px);
+    }
+    .card > * { position: relative; z-index: 1; }
+    .card--border > * { position: relative; z-index: 2; }
+
     /* Focus ring */
-    .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px rgba(34,211,238,.4); }
+    .focus-ring:focus { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+
+    /* Animated btn sheen */
+    .btn-sheen { position: relative; overflow: hidden; }
+    .btn-sheen::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.35) 20%, transparent 40%);
+      transform: translateX(-120%);
+    }
+    .btn-sheen:hover::after { animation: sheen 1.2s linear; }
+
+    /* Matrix / code-rain canvas overlay */
+    #codeCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: .28;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    /* Icon badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .4rem .7rem; border-radius: 999px;
+      background: rgba(34,211,238,.12);
+      border: 1px solid rgba(34,211,238,.35);
+      font-size: .75rem; color: #a5f3fc;
+    }
+
+    /* Tilt on hover (subtle) */
+    .tilt:hover { transform: perspective(700px) rotateX(3deg) rotateY(-3deg) translateY(-2px); }
+
+    /* Utility tiny tag */
+    .tag {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .35rem .6rem; border-radius: .6rem;
+      background: rgba(148,163,184,.08);
+      border: 1px solid rgba(148,163,184,.18);
+      transition: all .2s ease;
+      font-size: .8rem;
+    }
+    .tag:hover { border-color: rgba(34,211,238,.35); color: #67e8f9; }
   </style>
 </head>
 
 <body class="bg-base text-ink font-sans selection:bg-accent/30 selection:text-white">
+  <!-- Animated code background -->
+  <canvas id="codeCanvas"></canvas>
+
+  <!-- Top ribbon gradient accents -->
+  <div class="pointer-events-none fixed inset-x-0 -top-24 h-48 opacity-50 blur-3xl"
+       style="background: radial-gradient(600px 200px at 10% 50%, rgba(34,211,238,.45), transparent 60%); z-index:-1;"></div>
+  <div class="pointer-events-none fixed inset-x-0 -top-16 h-56 opacity-30 blur-3xl"
+       style="background: radial-gradient(600px 220px at 90% 50%, rgba(167,139,250,.35), transparent 60%); z-index:-1;"></div>
+
   <!-- Nav -->
-  <header class="sticky top-0 z-40 bg-base/80 backdrop-blur border-b border-slate-800">
+  <header class="sticky top-0 z-40 bg-base/70 backdrop-blur border-b border-slate-800/70">
     <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
-      <a href="#top" class="text-lg font-extrabold tracking-tight hover:text-accent transition">BP.</a>
+      <a href="#top" class="text-lg font-extrabold tracking-tight hover:text-accent transition flex items-center gap-2">
+        <span class="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-accent/15 border border-accent/40">
+          <i data-lucide="code-xml" class="w-4 h-4"></i>
+        </span>
+        BP.
+      </a>
       <nav class="hidden md:flex items-center gap-6 text-sm">
-        <a href="#skills" class="hover:text-accent transition">Skills</a>
-        <a href="#experience" class="hover:text-accent transition">Experience</a>
-        <a href="#contact" class="hover:text-accent transition">Contact</a>
+        <a href="#skills" class="hover:text-accent transition flex items-center gap-2"><i data-lucide="sparkles" class="w-4 h-4"></i>Skills</a>
+        <a href="#experience" class="hover:text-accent transition flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4"></i>Experience</a>
+        <a href="#projects" class="hover:text-accent transition flex items-center gap-2"><i data-lucide="box" class="w-4 h-4"></i>Projects</a>
+        <a href="#contact" class="hover:text-accent transition flex items-center gap-2"><i data-lucide="send" class="w-4 h-4"></i>Contact</a>
       </nav>
-      <a href="#contact" class="px-4 py-2 rounded-lg bg-accent/20 hover:bg-accent/30 border border-accent/40 text-accent transition focus-ring">Get in touch</a>
+      <a href="#contact" class="px-4 py-2 rounded-lg bg-accent/20 hover:bg-accent/30 border border-accent/40 text-accent transition focus-ring btn-sheen flex items-center gap-2">
+        <i data-lucide="message-square" class="w-4 h-4"></i> Get in touch
+      </a>
     </div>
   </header>
 
   <!-- Hero -->
   <section id="top" class="relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none opacity-40">
-      <div class="absolute -top-24 -right-16 h-80 w-80 rounded-full blur-3xl" style="background: radial-gradient(600px 200px at 50% 50%, rgba(34,211,238,.35), transparent 60%);"></div>
-      <div class="absolute -bottom-24 -left-16 h-96 w-96 rounded-full blur-3xl" style="background: radial-gradient(600px 200px at 50% 50%, rgba(167,139,250,.25), transparent 60%);"></div>
-    </div>
-
-    <div class="mx-auto max-w-7xl px-4 py-20 lg:py-28 grid lg:grid-cols-2 gap-10 items-center">
+    <div class="mx-auto max-w-7xl px-4 py-16 lg:py-24 grid lg:grid-cols-2 gap-10 items-center">
       <div class="reveal">
-        <h1 class="text-4xl lg:text-6xl font-extrabold leading-tight">
+        <div class="inline-flex items-center gap-2 badge">
+          <i data-lucide="zap" class="w-4 h-4"></i> Java • Spring Boot • Payments
+        </div>
+        <h1 class="mt-4 text-4xl lg:text-6xl font-extrabold leading-tight tracking-tight">
           Bhuvan Parashar
         </h1>
-        <p class="mt-2 text-xl text-slate-300">Software Engineer | Java &amp; Spring Boot Specialist</p>
+        <p class="mt-2 text-xl text-slate-300">Software Engineer • Java &amp; Spring Boot Specialist</p>
         <p class="mt-6 text-slate-300/90 leading-relaxed">
-          Software Engineer with 4+ years of backend development experience in Java, Spring Boot, and scalable payment systems. Proven expertise in designing secure, high-performance applications, modernizing legacy monoliths into microservices, and delivering banking &amp; fintech integrations across 10+ financial institutions. Skilled in REST/SOAP APIs, credit card lifecycle, wallet services, VAN-based systems, UPI, and BNPL platforms. Adept at SQL tuning, exception handling, JUnit testing, and secure transaction workflows. Recognized for improving performance by 30%, leading 10+ projects end-to-end, and mentoring junior developers. Currently expanding expertise in microservices, containerization, and distributed systems, with long-term aspirations to explore AI/ML-driven backend solutions.
+          Backend engineer with 4+ years building secure, high-performance fintech systems: Java, Spring Boot, microservices, UPI, VAN, wallets, BNPL. Led 10+ integrations across banks, modernized monoliths, and tuned SQL for serious performance wins.
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href="#experience" class="px-5 py-3 rounded-lg bg-accent text-slate-900 font-semibold hover:shadow-glow transition focus-ring">View Experience</a>
-          <a href="#skills" class="px-5 py-3 rounded-lg border border-slate-700 hover:border-accent/60 hover:text-accent transition focus-ring">Explore Skills</a>
+          <a href="#experience" class="px-5 py-3 rounded-lg bg-accent text-slate-900 font-semibold hover:shadow-glow transition focus-ring btn-sheen flex items-center gap-2">
+            <i data-lucide="timeline" class="w-4 h-4"></i> View Experience
+          </a>
+          <a href="#skills" class="px-5 py-3 rounded-lg border border-slate-700 hover:border-accent/60 hover:text-accent transition focus-ring flex items-center gap-2">
+            <i data-lucide="grid" class="w-4 h-4"></i> Explore Skills
+          </a>
         </div>
-        <p class="mt-4 text-xs text-slate-400">Source: Resume</p>
+        <p class="mt-4 text-xs text-slate-400">Resume-backed profile</p>
       </div>
 
-      <!-- Video Panel -->
+      <!-- Video / Showcase -->
       <div class="reveal">
-        <div class="glass rounded-2xl p-4 lg:p-6 shadow-glow">
+        <div class="card card--border rounded-2xl p-5 lg:p-6 shadow-glow tilt">
           <div class="relative aspect-video rounded-xl overflow-hidden border border-slate-700">
-            <!-- Placeholder for AI video -->
-            <video id="introVideo" class="w-full h-full object-cover" controls poster="" preload="none">
-              <!-- Replace the src below with your generated video URL/file -->
+            <video id="introVideo" class="w-full h-full object-cover" controls preload="none" poster="">
               <source src="intro.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
             <div id="loadingShimmer" class="absolute inset-0 pointer-events-none">
               <div class="absolute inset-x-0 top-0 h-1 overflow-hidden">
-                <div class="h-full w-1/3 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer"></div>
+                <div class="h-full w-1/3 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-sheen"></div>
               </div>
+            </div>
+            <!-- top-right floating chips -->
+            <div class="absolute top-3 right-3 flex gap-2">
+              <span class="tag"><i data-lucide="shield-check" class="w-4 h-4"></i>Secure</span>
+              <span class="tag"><i data-lucide="rocket" class="w-4 h-4"></i>Scalable</span>
             </div>
           </div>
           <div class="mt-4 flex items-center gap-3">
-            <button id="playBtn" class="px-4 py-2 rounded-lg bg-accent text-slate-900 font-semibold hover:shadow-glow transition focus-ring">Play Intro</button>
-            <a href="#video-instructions" class="text-sm underline hover:text-accent transition">How this video was made</a>
+            <button id="playBtn" class="px-4 py-2 rounded-lg bg-accent text-slate-900 font-semibold hover:shadow-glow transition focus-ring btn-sheen flex items-center gap-2">
+              <i data-lucide="play" class="w-4 h-4"></i> Play Intro
+            </button>
+            <a href="#video-instructions" class="text-sm underline hover:text-accent transition flex items-center gap-1">
+              <i data-lucide="wand-2" class="w-4 h-4"></i> How this video was made
+            </a>
           </div>
         </div>
       </div>
@@ -119,42 +252,48 @@
   </section>
 
   <!-- Skills -->
-  <section id="skills" class="py-16 border-t border-slate-800">
+  <section id="skills" class="py-16 border-t border-slate-800/70">
     <div class="mx-auto max-w-7xl px-4">
-      <h2 class="text-3xl font-bold mb-6 reveal">Key Skills</h2>
+      <h2 class="text-3xl font-bold mb-8 reveal flex items-center gap-3">
+        <i data-lucide="sparkle" class="w-7 h-7"></i> Key Skills
+      </h2>
 
-      <!-- Categories -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Languages & Frameworks -->
-        <div class="glass rounded-xl p-5 reveal">
-          <h3 class="font-semibold mb-3 text-accent">Languages &amp; Frameworks</h3>
+        <div class="card rounded-xl p-5 reveal">
+          <h3 class="font-semibold mb-3 text-accent flex items-center gap-2">
+            <i data-lucide="braces" class="w-5 h-5"></i> Languages & Frameworks
+          </h3>
           <div class="flex flex-wrap gap-2">
-            <!-- From resume -->
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">Core Java (JSE)</span>
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">Advanced Java (JEE)</span>
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">Spring Boot</span>
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">Spring MVC</span>
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">Hibernate</span>
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">JPA</span>
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">REST</span>
-            <span class="px-3 py-1 rounded-lg bg-accent/15 border border-accent/30 hover:border-accent transition">SOAP</span>
+            <span class="tag">Core Java (JSE)</span>
+            <span class="tag">Advanced Java (JEE)</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">Spring MVC</span>
+            <span class="tag">Hibernate</span>
+            <span class="tag">JPA</span>
+            <span class="tag">REST</span>
+            <span class="tag">SOAP</span>
           </div>
         </div>
 
         <!-- Architecture & Design -->
-        <div class="glass rounded-xl p-5 reveal">
-          <h3 class="font-semibold mb-3 text-accent">Architecture &amp; Design</h3>
+        <div class="card rounded-xl p-5 reveal">
+          <h3 class="font-semibold mb-3 text-accent flex items-center gap-2">
+            <i data-lucide="sitemap" class="w-5 h-5"></i> Architecture & Design
+          </h3>
           <div class="flex flex-wrap gap-2">
-            <span class="tag">Monolith → Microservices Transition</span>
-            <span class="tag">Proxy Design Pattern</span>
+            <span class="tag">Monolith → Microservices</span>
+            <span class="tag">Proxy Pattern</span>
             <span class="tag">Security Interceptors</span>
             <span class="tag">API Lifecycle</span>
           </div>
         </div>
 
         <!-- Fintech & Payments -->
-        <div class="glass rounded-xl p-5 reveal">
-          <h3 class="font-semibold mb-3 text-accent">Fintech &amp; Payments</h3>
+        <div class="card rounded-xl p-5 reveal">
+          <h3 class="font-semibold mb-3 text-accent flex items-center gap-2">
+            <i data-lucide="contactless-payment" class="w-5 h-5"></i> Fintech & Payments
+          </h3>
           <div class="flex flex-wrap gap-2">
             <span class="tag">Credit Card Lifecycle</span>
             <span class="tag">Wallet Services</span>
@@ -167,31 +306,37 @@
         </div>
 
         <!-- Performance & Security -->
-        <div class="glass rounded-xl p-5 reveal">
-          <h3 class="font-semibold mb-3 text-accent">Performance &amp; Security</h3>
+        <div class="card rounded-xl p-5 reveal">
+          <h3 class="font-semibold mb-3 text-accent flex items-center gap-2">
+            <i data-lucide="gauge" class="w-5 h-5"></i> Performance & Security
+          </h3>
           <div class="flex flex-wrap gap-2">
             <span class="tag">SQL Optimization</span>
             <span class="tag">Encryption/Decryption</span>
             <span class="tag">Checksum Validation</span>
             <span class="tag">API Fallback</span>
-            <span class="tag">Scheduling Jobs</span>
+            <span class="tag">Schedulers</span>
           </div>
         </div>
 
         <!-- Databases & Testing -->
-        <div class="glass rounded-xl p-5 reveal">
-          <h3 class="font-semibold mb-3 text-accent">Databases &amp; Testing</h3>
+        <div class="card rounded-xl p-5 reveal">
+          <h3 class="font-semibold mb-3 text-accent flex items-center gap-2">
+            <i data-lucide="database" class="w-5 h-5"></i> Databases & Testing
+          </h3>
           <div class="flex flex-wrap gap-2">
             <span class="tag">MySQL</span>
             <span class="tag">Oracle DB</span>
             <span class="tag">JUnit</span>
-            <span class="tag">JSON/XML Handling</span>
+            <span class="tag">JSON/XML</span>
           </div>
         </div>
 
         <!-- DevOps & Tools -->
-        <div class="glass rounded-xl p-5 reveal">
-          <h3 class="font-semibold mb-3 text-accent">DevOps &amp; Tools</h3>
+        <div class="card rounded-xl p-5 reveal">
+          <h3 class="font-semibold mb-3 text-accent flex items-center gap-2">
+            <i data-lucide="settings" class="w-5 h-5"></i> DevOps & Tools
+          </h3>
           <div class="flex flex-wrap gap-2">
             <span class="tag">Maven</span>
             <span class="tag">Git</span>
@@ -208,13 +353,15 @@
         </div>
 
         <!-- Professional Skills -->
-        <div class="glass rounded-xl p-5 reveal">
-          <h3 class="font-semibold mb-3 text-accent">Professional Skills</h3>
+        <div class="card rounded-xl p-5 reveal">
+          <h3 class="font-semibold mb-3 text-accent flex items-center gap-2">
+            <i data-lucide="users" class="w-5 h-5"></i> Professional Skills
+          </h3>
           <div class="flex flex-wrap gap-2">
             <span class="tag">Agile (Scrum, Jira)</span>
-            <span class="tag">Stakeholder Communication</span>
+            <span class="tag">Stakeholder Comms</span>
             <span class="tag">Mentorship</span>
-            <span class="tag">Task Prioritization</span>
+            <span class="tag">Prioritization</span>
             <span class="tag">Problem-Solving</span>
           </div>
         </div>
@@ -223,100 +370,125 @@
   </section>
 
   <!-- Experience -->
-  <section id="experience" class="py-16 border-t border-slate-800">
+  <section id="experience" class="py-16 border-t border-slate-800/70">
     <div class="mx-auto max-w-7xl px-4">
-      <h2 class="text-3xl font-bold mb-8 reveal">Professional Experience</h2>
+      <h2 class="text-3xl font-bold mb-8 reveal flex items-center gap-3">
+        <i data-lucide="briefcase" class="w-7 h-7"></i> Professional Experience
+      </h2>
 
       <!-- Obopay -->
-      <article class="glass rounded-2xl p-6 mb-6 reveal">
+      <article class="card card--border rounded-2xl p-6 mb-6 reveal">
         <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-2">
           <div>
-            <h3 class="text-xl font-semibold">Software Engineer — Obopay Mobile Technologies Pvt Ltd</h3>
+            <h3 class="text-xl font-semibold flex items-center gap-2">
+              <i data-lucide="wallet" class="w-5 h-5"></i>
+              Software Engineer — Obopay Mobile Technologies Pvt Ltd
+            </h3>
             <p class="text-sm text-slate-400">Aug 2025 – Present</p>
           </div>
-          <span class="px-3 py-1 text-xs rounded-lg border border-accent/40 text-accent self-start lg:self-auto">Wallets • Cards • Loyalty</span>
+          <span class="badge"><i data-lucide="gift" class="w-4 h-4"></i> Wallets • Cards • Loyalty</span>
         </div>
         <ul class="mt-4 space-y-2 list-disc list-inside text-slate-300/90">
-          <li>Developed Loyalty Program APIs to convert customer transactions into reward points, coupons, and redemption workflows.</li>
-          <li>Gained deep domain expertise in credit card issuance, linking, transactions, and reversals within the wallet ecosystem.</li>
-          <li>Enhanced monolithic SOAP systems using Proxy Design Pattern and Security Interceptors for modularity &amp; security.</li>
-          <li>Improved performance &amp; reliability through SQL tuning, JUnit test coverage, exception handling, tokenization, and Linux scripting.</li>
-          <li>Managed deployments on Tomcat (Dev) and Oracle WebLogic (Prod), with version control on GCloud VCS.</li>
-          <li>Actively involved in monolith-to-microservices modernization initiatives, aligning with future career goals.</li>
+          <li>Built Loyalty APIs (points, coupons, redemption).</li>
+          <li>Credit card issuance, linking, transactions, reversals in wallet ecosystem.</li>
+          <li>Hardened SOAP monolith with Proxy Pattern & Security Interceptors.</li>
+          <li>SQL tuning, tests (JUnit), exception handling, tokenization, Linux scripts.</li>
+          <li>Deployments on Tomcat (Dev), Oracle WebLogic (Prod), GCloud VCS.</li>
+          <li>Contributing to microservices modernization roadmap.</li>
         </ul>
       </article>
 
-      <!-- SabPaisa Developer -->
-      <article class="glass rounded-2xl p-6 mb-6 reveal">
+      <!-- SabPaisa Dev -->
+      <article class="card rounded-2xl p-6 mb-6 reveal">
         <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-2">
           <div>
-            <h3 class="text-xl font-semibold">Software Developer — SabPaisa (SRS Live Technologies Pvt. Ltd.)</h3>
+            <h3 class="text-xl font-semibold flex items-center gap-2">
+              <i data-lucide="building-2" class="w-5 h-5"></i>
+              Software Developer — SabPaisa (SRS Live Technologies Pvt. Ltd.)
+            </h3>
             <p class="text-sm text-slate-400">Feb 2022 – Jan 2025</p>
           </div>
-          <span class="px-3 py-1 text-xs rounded-lg border border-accent/40 text-accent self-start lg:self-auto">UPI • VAN • Microservices</span>
+          <span class="badge"><i data-lucide="link-2" class="w-4 h-4"></i> UPI • VAN • Microservices</span>
         </div>
         <ul class="mt-4 space-y-2 list-disc list-inside text-slate-300/90">
-          <li>Challan Project: Refactored a legacy monolith into two microservices, reducing coupling and improving maintainability.</li>
-          <li>VAN Generate Service: Enhanced offline payment support (Cash, NEFT, RTGS, IMPS), improving efficiency &amp; maintainability.</li>
-          <li>VAN Merchant Service: Designed APIs enabling clients to collect multiple payments against a single VAN, with payer-level permissions.</li>
-          <li>VAN Bank Service: Built secure APIs for real-time VAN/challan verification &amp; status updates with multiple banks.</li>
-          <li>UPI QR Application: Delivered dynamic QR &amp; Intent UPI integration with a single endpoint for instant payment string generation.</li>
-          <li>Executed 10+ successful bank integrations (UPI, Net Banking, BNPL, Wallets), implementing checksum validation, encryption, webhook APIs, and fallback mechanisms.</li>
-          <li>Impact: Increased system performance by 30%, reduced turnaround time by 20%, and maintained 95%+ client satisfaction.</li>
+          <li>Split legacy monolith into services (Challan Project) → maintainability↑.</li>
+          <li>VAN Generate Service for offline payments (Cash/NEFT/RTGS/IMPS).</li>
+          <li>VAN Merchant Service: multi-collection per VAN, payer-level permissions.</li>
+          <li>VAN Bank Service: real-time verification & status APIs with multiple banks.</li>
+          <li>UPI QR app: single endpoint for dynamic QR + Intent flows.</li>
+          <li>10+ bank integrations (UPI, Net Banking, BNPL, Wallets) with checksum, encryption, webhooks, fallbacks.</li>
+          <li>Impact: performance +30%, TAT −20%, 95%+ client satisfaction.</li>
         </ul>
       </article>
 
       <!-- SabPaisa Intern -->
-      <article class="glass rounded-2xl p-6 reveal">
+      <article class="card rounded-2xl p-6 reveal">
         <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-2">
           <div>
-            <h3 class="text-xl font-semibold">Java Intern — SabPaisa</h3>
+            <h3 class="text-xl font-semibold flex items-center gap-2">
+              <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+              Java Intern — SabPaisa
+            </h3>
             <p class="text-sm text-slate-400">Aug 2021 – Jan 2022</p>
           </div>
-          <span class="px-3 py-1 text-xs rounded-lg border border-accent/40 text-accent self-start lg:self-auto">Payment Gateway</span>
+          <span class="badge"><i data-lucide="credit-card" class="w-4 h-4"></i> Payment Gateway</span>
         </div>
         <ul class="mt-4 space-y-2 list-disc list-inside text-slate-300/90">
-          <li>Built and maintained REST APIs for the Payment Gateway, covering CRUD and transaction logging.</li>
-          <li>Practiced Agile methodologies (Scrum, Daily Standups, Sprint Planning), contributing to rapid iteration cycles.</li>
+          <li>Built and maintained REST APIs for payments, CRUD & transaction logs.</li>
+          <li>Practiced Agile (Scrum, Standups, Sprint Planning) for rapid iteration.</li>
         </ul>
       </article>
 
-      <!-- Key Projects -->
-      <div class="mt-10 reveal">
-        <h3 class="text-lg font-semibold mb-4">Key Projects</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="glass rounded-xl p-5">
-            <p class="font-medium">Loyalty Program API</p>
-            <p class="text-sm text-slate-400">Rewarded customer spending with points, coupons, and redemption flows.</p>
+      <!-- Key Projects Grid -->
+      <div id="projects" class="mt-10 reveal">
+        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="box" class="w-5 h-5"></i> Key Projects
+        </h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="card rounded-xl p-5 tilt">
+            <div class="flex items-center gap-2 font-medium">
+              <i data-lucide="gift" class="w-5 h-5 text-accent"></i> Loyalty Program API
+            </div>
+            <p class="text-sm text-slate-400 mt-1">Points, coupons, redemptions with audit trails.</p>
           </div>
-          <div class="glass rounded-xl p-5">
-            <p class="font-medium">VAN Merchant Service</p>
-            <p class="text-sm text-slate-400">Enabled multi-collection capability on a single Virtual Account Number.</p>
+          <div class="card rounded-xl p-5 tilt">
+            <div class="flex items-center gap-2 font-medium">
+              <i data-lucide="columns-3" class="w-5 h-5 text-accent"></i> VAN Merchant Service
+            </div>
+            <p class="text-sm text-slate-400 mt-1">Multiple collections against a single VAN with ACL.</p>
           </div>
-          <div class="glass rounded-xl p-5">
-            <p class="font-medium">UPI QR Application</p>
-            <p class="text-sm text-slate-400">Unified integration for Intent UPI &amp; dynamic QR transactions.</p>
+          <div class="card rounded-xl p-5 tilt">
+            <div class="flex items-center gap-2 font-medium">
+              <i data-lucide="scan-line" class="w-5 h-5 text-accent"></i> UPI QR Application
+            </div>
+            <p class="text-sm text-slate-400 mt-1">Unified Intent + dynamic QR for instant payments.</p>
           </div>
-          <div class="glass rounded-xl p-5">
-            <p class="font-medium">Challan Project</p>
-            <p class="text-sm text-slate-400">Transformed monolithic app → microservices for scalability and maintainability.</p>
+          <div class="card rounded-xl p-5 tilt">
+            <div class="flex items-center gap-2 font-medium">
+              <i data-lucide="split" class="w-5 h-5 text-accent"></i> Challan Microservices
+            </div>
+            <p class="text-sm text-slate-400 mt-1">Monolith → microservices for scale & agility.</p>
           </div>
         </div>
       </div>
 
       <!-- Achievements & Certifications -->
       <div class="mt-10 reveal">
-        <h3 class="text-lg font-semibold mb-4">Achievements &amp; Certifications</h3>
+        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="trophy" class="w-5 h-5"></i> Achievements & Certifications
+        </h3>
         <ul class="space-y-2 text-slate-300/90 list-disc list-inside">
           <li>Rising Star Award (2023–24) – SabPaisa</li>
           <li>Quick Resolver Award (2022–23) – SabPaisa</li>
-          <li>Certifications: Java &amp; Problem-Solving (HackerRank), Advanced Java (Programming Hub), Oracle Java Explorer Badge, Time Management Mastery (Udemy)</li>
+          <li>Certs: HackerRank (Java & Problem-Solving), Advanced Java (Programming Hub), Oracle Java Explorer, Time Management (Udemy).</li>
         </ul>
       </div>
 
       <!-- Education -->
       <div class="mt-10 reveal">
-        <h3 class="text-lg font-semibold mb-4">Education</h3>
+        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="book-open-check" class="w-5 h-5"></i> Education
+        </h3>
         <p>MCA (2020–2022) – Maharishi Dayanand University, Rohtak</p>
         <p>BCA (2016–2019) – Maharishi Dayanand University, Rohtak</p>
       </div>
@@ -324,24 +496,31 @@
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="py-16 border-t border-slate-800">
+  <section id="contact" class="py-16 border-t border-slate-800/70">
     <div class="mx-auto max-w-7xl px-4">
-      <h2 class="text-3xl font-bold mb-6 reveal">Contact</h2>
+      <h2 class="text-3xl font-bold mb-8 reveal flex items-center gap-3">
+        <i data-lucide="send" class="w-7 h-7"></i> Contact
+      </h2>
       <div class="grid md:grid-cols-2 gap-6">
-        <div class="glass rounded-xl p-6 reveal">
-          <p class="text-slate-300/90">I’m currently focused on Java microservices, distributed systems, and scalable API design—open to collaborating on backend and fintech integrations.</p>
-          <div class="mt-5 space-y-2">
-            <p><span class="text-slate-400">Phone:</span> +91-9716052290</p>
-            <p><span class="text-slate-400">Email:</span> <a class="underline hover:text-accent" href="mailto:bhuvan.parashar24@gmail.com">bhuvan.parashar24@gmail.com</a></p>
-            <p><span class="text-slate-400">LinkedIn:</span> <a class="underline hover:text-accent" href="https://linkedin.com/in/bhuvan-parashar" target="_blank" rel="noreferrer">linkedin.com/in/bhuvan-parashar</a></p>
+        <div class="card rounded-xl p-6 reveal">
+          <p class="text-slate-300/90">Open to roles in Java microservices, distributed systems, and scalable API design. Let’s build something reliable & fast.</p>
+          <div class="mt-5 space-y-3">
+            <p class="flex items-center gap-3"><i data-lucide="phone" class="w-5 h-5 text-accent"></i> +91-9716052290</p>
+            <p class="flex items-center gap-3"><i data-lucide="mail" class="w-5 h-5 text-accent"></i>
+              <a class="underline hover:text-accent" href="mailto:bhuvan.parashar24@gmail.com">bhuvan.parashar24@gmail.com</a></p>
+            <p class="flex items-center gap-3"><i data-lucide="linkedin" class="w-5 h-5 text-accent"></i>
+              <a class="underline hover:text-accent" href="https://linkedin.com/in/bhuvan-parashar" target="_blank" rel="noreferrer">linkedin.com/in/bhuvan-parashar</a></p>
           </div>
         </div>
-        <div class="glass rounded-xl p-6 reveal" id="video-instructions">
-          <h3 class="font-semibold text-accent mb-2">Intro Video Notes</h3>
+
+        <div class="card rounded-xl p-6 reveal" id="video-instructions">
+          <h3 class="font-semibold text-accent mb-3 flex items-center gap-2">
+            <i data-lucide="wand-2" class="w-5 h-5"></i> Intro Video Notes
+          </h3>
           <ol class="list-decimal list-inside text-slate-300/90 space-y-2">
-            <li>Use the separate “AI Video Introduction Script” (below) with your favorite AI presenter/voice tool.</li>
-            <li>Export an MP4 named <code>intro.mp4</code> and place it alongside this <code>index.html</code>.</li>
-            <li>The “Play Intro” button will load and play your video.</li>
+            <li>Use your “AI Video Introduction Script” with your presenter/voice tool.</li>
+            <li>Export an MP4 named <code>intro.mp4</code> and place it next to this file.</li>
+            <li>Click “Play Intro” above to load and play your video.</li>
           </ol>
         </div>
       </div>
@@ -349,30 +528,25 @@
   </section>
 
   <!-- Footer -->
-  <footer class="py-10 border-t border-slate-800">
+  <footer class="py-10 border-t border-slate-800/70">
     <div class="mx-auto max-w-7xl px-4 text-sm text-slate-500 flex flex-col md:flex-row items-center justify-between gap-3">
       <p>&copy; <span id="year"></span> Bhuvan Parashar</p>
-      <p>Short-term: Specialize in Java Microservices, distributed systems, observability, and scalable API design. Long-term: Integrate AI/ML in backend platforms to build intelligent, self-optimizing enterprise systems.</p>
+      <p>Short-term: Java microservices, distributed systems, observability. Long-term: AI/ML-assisted backends.</p>
     </div>
   </footer>
 
-  <!-- Utilities / small components -->
-  <template id="chip">
-    <span class="tag px-3 py-1 rounded-lg bg-accent/10 border border-slate-700 hover:border-accent/60 hover:text-accent transition"></span>
-  </template>
-
   <!-- Scripts -->
   <script>
-    // Intersection Observer to reveal sections
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('visible');
-      });
-    }, { threshold: 0.12 });
+    // Lucide icons
+    window.addEventListener('DOMContentLoaded', () => { lucide.createIcons(); });
 
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    // Play intro video
+    // Play intro video + shimmer
     const video = document.getElementById('introVideo');
     const playBtn = document.getElementById('playBtn');
     const shimmer = document.getElementById('loadingShimmer');
@@ -387,7 +561,51 @@
 
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---------------------------------------------------
+    // Animated "Code Rain" background (matrix-style)
+    // ---------------------------------------------------
+    const canvas = document.getElementById('codeCanvas');
+    const ctx = canvas.getContext('2d');
+    const glyphs = '01{}[]()<>=+-/*$#&_~:%^!?ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let width, height, cols, drops;
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      cols = Math.floor(width / 16);
+      drops = Array(cols).fill(0).map(() => Math.random() * -height);
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function draw() {
+      // trail overlay
+      ctx.fillStyle = 'rgba(6, 9, 19, 0.08)';
+      ctx.fillRect(0, 0, width, height);
+
+      // gradient color
+      const grad = ctx.createLinearGradient(0, 0, width, height);
+      grad.addColorStop(0, 'rgba(34,211,238,0.9)');   // cyan
+      grad.addColorStop(0.5, 'rgba(167,139,250,0.85)'); // violet
+      grad.addColorStop(1, 'rgba(16,185,129,0.85)');  // mint
+      ctx.fillStyle = grad;
+      ctx.font = '14px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = glyphs[Math.floor(Math.random() * glyphs.length)];
+        const x = i * 16;
+        const y = drops[i] * 16;
+
+        ctx.fillText(text, x, y);
+
+        // reset randomly and vary speed
+        if (y > height && Math.random() > 0.985) drops[i] = Math.random() * -20;
+        drops[i] += 0.9 + Math.random() * 0.6;
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
   </script>
 </body>
 </html>
-# index.html
